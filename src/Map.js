@@ -13,31 +13,48 @@ export default function Map({
 
     const [time, setTime] = useState(0);
     const [animation] = useState({});
+    const loopLength = 1800;
+    const animationSpeed = 0.15;
 
-    const animate = () => {
-        setTime(t => (t + 1) % 1800);
-        animation.id = window.requestAnimationFrame(animate);
-    };
     useEffect(() => {
+        const animate = () => {
+          setTime(t => (t + animationSpeed) % loopLength);
+          animation.id = window.requestAnimationFrame(animate);
+        };
         animation.id = window.requestAnimationFrame(animate);
-        return () => window.cancelAnimationFrame(animation.id);
+      return () => window.cancelAnimationFrame(animation.id);
     }, [animation]);
-    
+
     const layers = [
         new TripsLayer({
-            id: 'trips',
+            id: 'trips-layer',
             data: torontoData,
             getPath: d => d.path,
             getTimestamps: d => d.timestamps,
-            getColor: [255, 93, 93],
-            opacity: 0.9,
-            widthMinPixels: 2,
+            getColor: d => {
+                if (d.value <= 100){
+                    return [0, 255, 0, 255];
+                }
+                else if (d.value <= 500){
+                    return [152, 219, 0, 255];
+                }
+                else if (d.value <= 1000){
+                    return [248, 102, 0, 255];
+                }
+                else if (d.value <= 4000){
+                    return [255, 0, 0, 255];
+                }
+                else{
+                    return [255, 0, 255, 255];
+                }
+            },
+            opacity: 1.0,
+            widthMinPixels: 4,
             rounded: true,
-            trailLength: 180,
+            trailLength: 3,
             currentTime: time,
-            shadowEnabled: false
         }),
-    ]
+    ];
 
     return (
     <>
@@ -45,6 +62,7 @@ export default function Map({
             initialViewState = {viewState}
             onViewStateChange = {onChangeViewState}
             layers={layers}
+            controller={true}
         >
             <MapGL
             style={{width, height}}
