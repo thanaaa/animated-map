@@ -6,6 +6,7 @@ import Map from './Map';
 import * as Locations from './locations';
 import toronto from './toronto.png';
 import vancouver from './vancouver.png';
+import scale from './scale.png';
 
 function App() {
   const [viewState, setViewState] = React.useState(Locations.toronto);
@@ -31,6 +32,9 @@ function App() {
           onViewStateChange={handleViewStateChange}
           viewState={viewState}
           />
+      </div>
+      <div className='scale'>
+        <img alt="scale" src={scale}/>
       </div>
       <div className='buttons'>
         <h1>Select a City</h1>
