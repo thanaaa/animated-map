@@ -2,14 +2,19 @@ import React, {useState, useEffect} from 'react'
 import MapGL from 'react-map-gl';
 import {TripsLayer} from '@deck.gl/geo-layers';
 import { DeckGL } from 'deck.gl';
+
 import torontoData from './toronto.json';
+import vancouverData from './vancouver.json';
+import {generateData} from './helpers';
 
 export default function Map({ 
     width, 
     height, 
     viewState, 
     onChangeViewState, 
+    currentCity
 }) {
+    //generateData('vancouver', 1500);
 
     const [time, setTime] = useState(0);
     const [animation] = useState({});
@@ -28,7 +33,7 @@ export default function Map({
     const layers = [
         new TripsLayer({
             id: 'trips-layer',
-            data: torontoData,
+            data: currentCity === 'toronto' ? torontoData : vancouverData,
             getPath: d => d.path,
             getTimestamps: d => d.timestamps,
             getColor: d => {

@@ -1,19 +1,23 @@
-import './App.css';
-import toronto from './toronto.png';
-import vancouver from './vancouver.png';
 import React from 'react';
+import { FlyToInterpolator } from 'deck.gl';
+
+import './App.css';
 import Map from './Map';
 import * as Locations from './locations';
+import toronto from './toronto.png';
+import vancouver from './vancouver.png';
 
 function App() {
-
   const [viewState, setViewState] = React.useState(Locations.toronto);
+  const [currentCity, setCurrentCity] = React.useState("toronto");
   const handleViewStateChange = ({viewState}) => setViewState(viewState);
   const handleFlyTo = destination => {
+    destination.longitude > -100 ? setCurrentCity("toronto") : setCurrentCity("vancouver");
     setViewState({
       ...viewState,
       ...destination,
-      transitionDuration: 8000,
+      transitionDuration: 4000,
+      transitionInterpolator: new FlyToInterpolator(),
     });
   }
   
@@ -21,6 +25,7 @@ function App() {
     <>
       <div>
         <Map 
+          currentCity={currentCity}
           width="100vw" 
           height="100vh"
           onViewStateChange={handleViewStateChange}

@@ -1,39 +1,45 @@
-
-function generateData(){
-    return dataGen();
-}
-
-let data = [];
-function dataGen(){
+export function generateData(city, count){
+    let data = [];
     let timestamps = 0;
-    for (let i = 0; i < 2000; i++){
+    for (let i = 0; i < count; i++){
         timestamps+=5;
-        data.push({
-            "value": randn_bm(0, 10000, 4.5),
-            "path": [
-                coordGen(),
-                coordGen(),
-            ],
-            "timestamps": [
-                timestamps, timestamps+5
-            ]
-        });
+        for (let i = 0; i < Math.random()*10; i++){
+            data.push({
+                "value": randn_bm(0, 10000, 4.5),
+                "path": [
+                    coordGen(city),
+                    coordGen(city),
+                ],
+                "timestamps": [
+                    timestamps, timestamps+5
+                ]
+            });
+        }
     }
+    console.log(data);
 }
 
-function coordGen(){
-    const longMin = 79.548;
-    const longMax = 79.249;
-
-    const latMin = 43.768;
-    const latMax = 43.638;
-
-    const long = (Math.random() * (longMax-longMin) + longMin).toFixed(3)*-1;
-    const lat = (Math.random() * (latMax-latMin) + latMin).toFixed(3);
-
+function coordGen(city){
+    let longMin,longMax,latMin,latMax, long, lat;
+    if (city === "toronto"){
+        longMin = 79.617;
+        longMax = 79.157;
+        latMin = 43.893;
+        latMax = 43.613;
+        long = (Math.random() * (longMax-longMin) + longMin).toFixed(3)*-1;
+        lat = (Math.random() * (latMax-latMin) + latMin).toFixed(3) * 1;
+    }
+    else if (city === "vancouver"){
+        longMin = 122.742;
+        longMax = 123.245;
+        latMin = 49.011;
+        latMax = 49.392;
+        long = (Math.random() * (longMax-longMin) + longMin).toFixed(3) * -1;
+        lat = (Math.random() * (latMax-latMin) + latMin).toFixed(3) * 1;
+    }
     return [long,lat];
 }
-
+//
 function randn_bm(min, max, skew) {
     let u = 0, v = 0;
     while(u === 0) u = Math.random() //Converting [0,1) to (0,1)
