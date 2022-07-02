@@ -68,8 +68,9 @@ export default function Map({
             onViewStateChange = {onChangeViewState}
             layers={layers}
             controller={true}
-        >
+            >
             <MapGL
+            mapboxAccessToken="pk.eyJ1IjoidGhhbmFhIiwiYSI6ImNsNHViZm9zczBwem0zanFwNWEwMm42MXEifQ.d0fBBTEHjklKCmKpcDLhxw"
             style={{width, height}}
             mapStyle="mapbox://styles/mapbox/dark-v10"
             />
