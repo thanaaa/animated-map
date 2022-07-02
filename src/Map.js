@@ -7,6 +7,11 @@ import torontoData from './toronto.json';
 import vancouverData from './vancouver.json';
 import {generateData} from './helpers';
 
+/* eslint-disable import/no-webpack-loader-syntax */
+import mapboxgl from 'mapbox-gl';
+// @ts-ignore
+mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
+
 export default function Map({ 
     width, 
     height, 
@@ -15,7 +20,6 @@ export default function Map({
     currentCity
 }) {
     //generateData('vancouver', 1500);
-
     const [time, setTime] = useState(0);
     const [animation] = useState({});
     const loopLength = 1800;
